@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Space Love 🚀💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            background: radial-gradient(circle at center, #0f0f23 0%, #000 70%);
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        /* Stars Background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        .star.small { width: 1px; height: 1px; }
+        .star.medium { width: 2px; height: 2px; }
+        .star.large { width: 3px; height: 3px; box-shadow: 0 0 10px #fff; }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Planets */
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            animation: orbit 20s linear infinite;
+        }
+
+        .planet.earth {
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 30% 30%, #4a90e2, #2563eb, #1e3a8a);
+            top: 10%;
+            left: 80%;
+            box-shadow: inset -10px -10px 0 rgba(0,0,0,0.3), 0 0 20px rgba(74, 144, 226, 0.5);
+        }
+
+        .planet.mars {
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle at 30% 30%, #ef4444, #dc2626, #991b1b);
+            top: 60%;
+            left: 10%;
+            box-shadow: inset -8px -8px 0 rgba(0,0,0,0.3), 0 0 15px rgba(239, 68, 68, 0.4);
+        }
+
+        @keyframes orbit {
+            0% { transform: rotate(0deg) translateX(50px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(50px) rotate(-360deg); }
+        }
+
+        /* 3D Center Text */
+        .center-3d {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateX(-15deg);
+            transform-style: preserve-3d;
+            animation: float3d 6s ease-in-out infinite;
+        }
+
+        .main-3d-text {
+            font-size: clamp(2.5rem, 10vw, 6rem);
+            color: #fff;
+            text-shadow: 0 0 30px #00ffff,
+                         0 0 60px #ff1493,
+                         0 0 90px #00ff00;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+            user-select: none;
+            text-align: center;
+        }
+
+        .main-3d-text:hover {
+            transform: rotateY(15deg) rotateX(15deg) scale(1.1);
+            text-shadow: 0 0 40px #00ffff,
+                         0 0 80px #ff1493,
+                         0 0 120px #00ff00,
+                         0 0 160px #ffff00;
+        }
+
+        @keyframes float3d {
+            0%, 100% { transform: translate(-50%, -50%) rotateX(-15deg) rotateY(-10deg); }
+            25% { transform: translate(-50%, -50%) rotateX(-10deg) rotateY(10deg); }
+            50% { transform: translate(-50%, -50%) rotateX(-20deg) rotateY(-5deg); }
+            75% { transform: translate(-50%, -50%) rotateX(-5deg) rotateY(-15deg); }
+        }
+
+        /* Falling Love Text */
+        .falling-love {
+            position: absolute;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            text-shadow: 0 0 15px currentColor;
+        }
+
+        .falling-love:hover {
+            transform: scale(1.3) rotateZ(15deg);
+            text-shadow: 0 0 25px currentColor, 0 0 35px #fff;
+        }
+
+        @keyframes fallSpace {
+            0% {
+                transform: translateY(-50px) rotateZ(0deg) scale(0.5);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+                transform: translateY(0px) rotateZ(36deg) scale(1);
+            }
+            100% {
+                transform: translateY(100vh) rotateZ(360deg) scale(0.3);
+                opacity: 0;
+            }
+        }
+
+        /* Swipe Indicator */
+        .swipe-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            text-align: center;
+            animation: pulse-glow 3s ease-in-out infinite;
+            z-index: 20;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.6; text-shadow: 0 0 5px rgba(0, 255, 255, 0.3); }
+            50% { opacity: 1; text-shadow: 0 0 15px rgba(0, 255, 255, 0.6); }
+        }
+
+        /* Shooting Stars */
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: linear-gradient(45deg, transparent, #fff, transparent);
+            animation: shoot 3s linear infinite;
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: translateX(-100px) translateY(100px);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100vw) translateY(-100px);
+                opacity: 0;
+            }
+        }
+
+        /* Space Particles */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: radial-gradient(circle, #00ffff, transparent);
+            border-radius: 50%;
+            animation: drift 15s linear infinite;
+        }
+
+        @keyframes drift {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% {
+                transform: translateY(-100px) translateX(200px);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .swipe-indicator {
+                bottom: 20px;
+                font-size: 12px;
+            }
+            
+            .planet.earth { width: 40px; height: 40px; }
+            .planet.mars { width: 30px; height: 30px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="starsContainer"></div>
+    
+    <!-- Planets -->
+    <div class="planet earth"></div>
+    <div class="planet mars"></div>
+    
+    <div class="center-3d">
+        <div class="main-3d-text" id="main3dText">I LOVE YOU</div>
+    </div>
+    
+    <div class="swipe-indicator">
+        👆 Tap screen or swipe to control love 💕<br>
+        <span style="font-size: 12px; opacity: 0.8;">↔️ Swipe left/right to rotate • ↕️ Swipe up/down for effects</span>
+    </div>
+
+    <script>
+        const loveMessages = [
+            "I LOVE YOU", "💕", "❤️", "LOVE", "SAYANG", "CINTA", 
+            "MY LOVE", "FOREVER", "ALWAYS", "💖", "DARLING", 
+            "SWEETHEART", "💘", "BELOVED", "💗", "XOXO", "KISS", "HUG"
+        ];
+
+        const spaceColors = [
+            "#00ffff", "#ff1493", "#00ff00", "#ffff00", "#ff4500", 
+            "#8a2be2", "#ff69b4", "#00bfff", "#lime", "#ffa500"
+        ];
+
+        let rotationAngle = 0;
+        let isWarpMode = false;
+        let startX = 0;
+        let startY = 0;
+        let currentRotationX = -15;
+        let currentRotationY = 0;
+
+        // Generate Stars
+        function createStars() {
+            const container = document.getElementById('starsContainer');
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.className = `star ${['small', 'medium', 'large'][Math.floor(Math.random() * 3)]}`;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                container.appendChild(star);
+            }
+        }
+
+        // Generate Space Particles
+        function createSpaceParticles() {
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 15 + 's';
+                    document.body.appendChild(particle);
+                    
+                    setTimeout(() => {
+                        particle.remove();
+                    }, 15000);
+                }, Math.random() * 5000);
+            }
+        }
+
+        // Create Falling Love Text
+        function createFallingLove() {
+            const love = document.createElement('div');
+            love.className = 'falling-love';
+            love.textContent = loveMessages[Math.floor(Math.random() * loveMessages.length)];
+            
+            love.style.left = Math.random() * 100 + '%';
+            love.style.top = '-50px';
+            love.style.fontSize = (Math.random() * 25 + 20) + 'px';
+            love.style.color = spaceColors[Math.floor(Math.random() * spaceColors.length)];
+            
+            const duration = Math.random() * 4 + 6;
+            love.style.animation = `fallSpace ${duration}s linear`;
+            
+            document.body.appendChild(love);
+            
+            setTimeout(() => {
+                love.remove();
+            }, duration * 1000);
+        }
+
+        // Launch Love Rain
+        function launchLoveRain() {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(createFallingLove, i * 300);
+            }
+        }
+
+        // Warp Speed Effect
+        function activateWarpSpeed() {
+            isWarpMode = !isWarpMode;
+            const stars = document.querySelectorAll('.star');
+            
+            stars.forEach(star => {
+                if (isWarpMode) {
+                    star.style.animation = 'shoot 0.5s linear infinite';
+                } else {
+                    star.style.animation = 'twinkle 3s ease-in-out infinite';
+                }
+            });
+            
+            if (isWarpMode) {
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(createFallingLove, i * 100);
+                }
+            }
+        }
+
+        // Rotate 3D Text
+        function rotate3DText() {
+            const text = document.getElementById('main3dText');
+            rotationAngle += 45;
+            text.style.transform = `rotateY(${rotationAngle}deg) rotateX(${rotationAngle/2}deg)`;
+            
+            // Change color on rotation
+            const randomColor1 = spaceColors[Math.floor(Math.random() * spaceColors.length)];
+            const randomColor2 = spaceColors[Math.floor(Math.random() * spaceColors.length)];
+            const randomColor3 = spaceColors[Math.floor(Math.random() * spaceColors.length)];
+            
+            text.style.textShadow = `
+                0 0 30px ${randomColor1},
+                0 0 60px ${randomColor2},
+                0 0 90px ${randomColor3}
+            `;
+        }
+
+        // Create Shooting Stars
+        function createShootingStars() {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const shootingStar = document.createElement('div');
+                    shootingStar.className = 'shooting-star';
+                    shootingStar.style.top = Math.random() * 50 + '%';
+                    shootingStar.style.left = '-100px';
+                    document.body.appendChild(shootingStar);
+                    
+                    setTimeout(() => {
+                        shootingStar.remove();
+                    }, 3000);
+                }, i * 800);
+            }
+        }
+
+        // Touch/Swipe Controls
+        let isTouching = false;
+
+        document.addEventListener('touchstart', function(e) {
+            isTouching = true;
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        }, { passive: true });
+
+        document.addEventListener('touchmove', function(e) {
+            if (!isTouching) return;
+            e.preventDefault();
+            
+            const currentX = e.touches[0].clientX;
+            const currentY = e.touches[0].clientY;
+            const deltaX = currentX - startX;
+            const deltaY = currentY - startY;
+            
+            // Rotate 3D text based on swipe
+            currentRotationY += deltaX * 0.2;
+            currentRotationX -= deltaY * 0.2;
+            
+            // Limit rotation
+            currentRotationX = Math.max(-60, Math.min(60, currentRotationX));
+            
+            const text = document.getElementById('main3dText');
+            text.style.transform = `rotateY(${currentRotationY}deg) rotateX(${currentRotationX}deg)`;
+            
+            // Change colors based on rotation intensity
+            const intensity = Math.abs(deltaX) + Math.abs(deltaY);
+            if (intensity > 50) {
+                const randomColor1 = spaceColors[Math.floor(Math.random() * spaceColors.length)];
+                const randomColor2 = spaceColors[Math.floor(Math.random() * spaceColors.length)];
+                const randomColor3 = spaceColors[Math.floor(Math.random() * spaceColors.length)];
+                
+                text.style.textShadow = `
+                    0 0 ${30 + intensity/10}px ${randomColor1},
+                    0 0 ${60 + intensity/5}px ${randomColor2},
+                    0 0 ${90 + intensity/3}px ${randomColor3}
+                `;
+            }
+            
+            startX = currentX;
+            startY = currentY;
+        }, { passive: false });
+
+        document.addEventListener('touchend', function(e) {
+            isTouching = false;
+            
+            // Trigger effects based on final position
+            const finalX = Math.abs(currentRotationY) % 360;
+            const finalY = Math.abs(currentRotationX);
+            
+            if (finalX > 45 && finalX < 135) {
+                launchLoveRain();
+            } else if (finalX > 135 && finalX < 225) {
+                activateWarpSpeed();
+            } else if (finalX > 225 && finalX < 315) {
+                createShootingStars();
+            }
+            
+            if (finalY > 30) {
+                createFallingLove();
+                createFallingLove();
+                createFallingLove();
+            }
+        });
+
+        // Mouse Controls for Desktop
+        let isMouseDown = false;
+
+        document.addEventListener('mousedown', function(e) {
+            isMouseDown = true;
+            startX = e.clientX;
+            startY = e.clientY;
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (!isMouseDown) return;
+            
+            const deltaX = e.clientX - startX;
+            const deltaY = e.clientY - startY;
+            
+            currentRotationY += deltaX * 0.3;
+            currentRotationX -= deltaY * 0.3;
+            
+            currentRotationX = Math.max(-60, Math.min(60, currentRotationX));
+            
+            const text = document.getElementById('main3dText');
+            text.style.transform = `rotateY(${currentRotationY}deg) rotateX(${currentRotationX}deg)`;
+            
+            // Color change effect
+            const intensity = Math.abs(deltaX) + Math.abs(deltaY);
+            if (intensity > 30) {
+                const randomColor1 = spaceColors[Math.floor(Math.random() * spaceColors.length)];
+                const randomColor2 = spaceColors[Math.floor(Math.random() * spaceColors.length)];
+                const randomColor3 = spaceColors[Math.floor(Math.random() * spaceColors.length)];
+                
+                text.style.textShadow = `
+                    0 0 ${30 + intensity/8}px ${randomColor1},
+                    0 0 ${60 + intensity/4}px ${randomColor2},
+                    0 0 ${90 + intensity/3}px ${randomColor3}
+                `;
+            }
+            
+            startX = e.clientX;
+            startY = e.clientY;
+        });
+
+        document.addEventListener('mouseup', function(e) {
+            isMouseDown = false;
+            
+            // Random effects on mouse release
+            if (Math.random() < 0.4) {
+                createFallingLove();
+            }
+            if (Math.random() < 0.2) {
+                createShootingStars();
+            }
+        });
+
+        // Add ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+                100% { transform: translate(-50%, -50%) scale(4); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Auto rotate 3D text
+        setInterval(() => {
+            if (Math.random() < 0.3) {
+                rotate3DText();
+            }
+        }, 5000);
+
+        // Auto falling love
+        setInterval(createFallingLove, 3000);
+
+        // Auto shooting stars
+        setInterval(createShootingStars, 15000);
+
+        // Initialize
+        function init() {
+            createStars();
+            createSpaceParticles();
+            
+            // Initial love rain
+            setTimeout(() => {
+                for (let i = 0; i < 8; i++) {
+                    setTimeout(createFallingLove, i * 800);
+                }
+            }, 2000);
+        }
+
+        // Start everything
+        window.addEventListener('load', init);
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>
